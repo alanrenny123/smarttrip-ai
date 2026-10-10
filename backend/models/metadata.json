@@ -1,0 +1,84 @@
+{
+  "model_name": "Random Forest",
+  "trained_at": "2026-10-10T10:53:44.312935",
+  "dataset_rows": 730,
+  "feature_columns": [
+    "place_encoded",
+    "hour",
+    "minute",
+    "day_of_week_encoded",
+    "week_of_year",
+    "month",
+    "is_weekend",
+    "holiday_encoded",
+    "event_encoded",
+    "weather_encoded",
+    "temperature",
+    "region_encoded",
+    "transportation_encoded"
+  ],
+  "target_column": "crowd_count",
+  "places": [
+    "Gateway of India, Mumbai",
+    "India Gate, Delhi",
+    "Mecca Masjid, Hyderabad",
+    "Qutub Minar, Delhi",
+    "Red Fort, Delhi",
+    "Sanchi Stupa, Madhya Pradesh",
+    "Taj Mahal, Agra",
+    "Varanasi Ghats, Varanasi"
+  ],
+  "crowd_thresholds": {
+    "low": 11798.220000000001,
+    "high": 21816.7
+  },
+  "evaluation_results": {
+    "Linear Regression": {
+      "mae": 9043.509155716712,
+      "rmse": 11076.581356179278,
+      "r2": 0.015268562410199582
+    },
+    "Decision Tree": {
+      "mae": 3417.1379669987546,
+      "rmse": 4704.58393911191,
+      "r2": 0.8223567283924319
+    },
+    "Random Forest": {
+      "mae": 2802.082260273973,
+      "rmse": 3699.971881601875,
+      "r2": 0.8901239174833893
+    },
+    "Gradient Boosting": {
+      "mae": 2969.4926077674377,
+      "rmse": 3882.4330245505444,
+      "r2": 0.8790198093339394
+    },
+    "XGBoost": {
+      "mae": 3143.92822265625,
+      "rmse": 4018.47284425315,
+      "r2": 0.8703930377960205
+    }
+  },
+  "best_model_metrics": {
+    "mae": 2802.082260273973,
+    "rmse": 3699.971881601875,
+    "r2": 0.8901239174833893
+  },
+  "feature_importance": {
+    "place_encoded": 0.5898319175406154,
+    "hour": 0.012532657519974769,
+    "minute": 0.014042936830289844,
+    "day_of_week_encoded": 0.008158014619640018,
+    "week_of_year": 0.012466116995659847,
+    "month": 0.005789819565834359,
+    "is_weekend": 0.011150058509148143,
+    "holiday_encoded": 0.001823150895753893,
+    "event_encoded": 0.31213342516247117,
+    "weather_encoded": 0.008361829457350851,
+    "temperature": 0.01340501971518693,
+    "region_encoded": 0.006334195559976788,
+    "transportation_encoded": 0.0039708576280979594
+  },
+  "train_size": 584,
+  "test_size": 146
+}

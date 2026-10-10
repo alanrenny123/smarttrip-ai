@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SmartTrip AI - AI-powered crowd prediction and intelligent trip planning for Indian tourist destinations. Avoid crowds, plan smarter.">
+    <title>SmartTrip AI — Intelligent Tourism Crowd Prediction & Trip Planner</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✈️</text></svg>">
+</head>
+<body>
+
+<!-- ═══════ Navigation ═══════ -->
+<nav class="nav" id="main-nav">
+    <a class="nav-brand" onclick="showPage('home')">
+        <span class="logo-icon">✈️</span>
+        <span>SmartTrip AI</span>
+    </a>
+    <ul class="nav-links">
+        <li><button class="nav-link active" data-page="home" onclick="showPage('home')">Home</button></li>
+        <li><button class="nav-link" data-page="predict" onclick="showPage('predict')">Predict</button></li>
+        <li><button class="nav-link" data-page="trip" onclick="showPage('trip')">Plan Trip</button></li>
+    </ul>
+</nav>
+
+<!-- ═══════ HOME PAGE ═══════ -->
+<main>
+<div class="page active" id="page-home">
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span>🤖</span> AI-Powered Tourism Intelligence
+            </div>
+            <h1 class="hero-title">
+                Travel Smarter.<br>
+                <span class="gradient-text">Avoid the Crowds.</span>
+            </h1>
+            <p class="hero-description">
+                AI-powered crowd prediction and intelligent trip planning for India's most popular tourist destinations. 
+                Know before you go.
+            </p>
+            <div class="hero-actions">
+                <button class="btn btn-primary btn-lg" onclick="showPage('predict')">
+                    ✨ Predict My Visit
+                </button>
+                <button class="btn btn-secondary btn-lg" onclick="showPage('trip')">
+                    🗺️ Plan My Trip
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="section container">
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle">Our ML model analyzes historical crowd data from 730+ records across 8 major Indian destinations to predict visitor volumes.</p>
+        <div class="how-it-works">
+            <div class="how-step">
+                <div class="how-step-number">1</div>
+                <h3 class="how-step-title">Choose Destination</h3>
+                <p class="how-step-desc">Select from India's top tourist spots — Taj Mahal, Red Fort, India Gate, and more.</p>
+            </div>
+            <div class="how-step">
+                <div class="how-step-number">2</div>
+                <h3 class="how-step-title">Pick Date & Time</h3>
+                <p class="how-step-desc">Tell us when you want to visit. We analyze time, day, season, holidays, and weather patterns.</p>
+            </div>
+            <div class="how-step">
+                <div class="how-step-number">3</div>
+                <h3 class="how-step-title">Get AI Prediction</h3>
+                <p class="how-step-desc">Our Random Forest ML model predicts crowd levels and recommends the best visiting time.</p>
+            </div>
+            <div class="how-step">
+                <div class="how-step-number">4</div>
+                <h3 class="how-step-title">Optimized Itinerary</h3>
+                <p class="how-step-desc">Planning multiple stops? We optimize your entire trip to minimize crowds and maximize enjoyment.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="section container">
+        <div class="stats-row" id="home-stats">
+            <div class="stat-item">
+                <div class="stat-value">730+</div>
+                <div class="stat-label">Data Records</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">8</div>
+                <div class="stat-label">Destinations</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-r2">—</div>
+                <div class="stat-label">Model Accuracy (R²)</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-model">—</div>
+                <div class="stat-label">ML Model</div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- ═══════ PREDICT PAGE ═══════ -->
+<div class="page" id="page-predict">
+    <section class="section container">
+        <h2 class="section-title">✨ Predict My Visit</h2>
+        <p class="section-subtitle">Select a destination and we'll predict the crowd level using our ML model trained on historical tourism data.</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); align-items: start;">
+            <!-- Left: Form -->
+            <div class="card" id="predict-form-card">
+                <div class="card-header">
+                    <h3 class="card-title">📍 Where do you want to go?</h3>
+                </div>
+
+                <form id="predict-form" onsubmit="handlePredict(event)">
+                    <div class="form-group">
+                        <label class="form-label" for="predict-place">Destination</label>
+                        <select class="form-select" id="predict-place" required>
+                            <option value="">Select a destination...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="predict-date">Date</label>
+                            <input class="form-input" type="date" id="predict-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="predict-time">Preferred Time</label>
+                            <input class="form-input" type="time" id="predict-time" value="11:00" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="predict-transport">Transportation</label>
+                            <select class="form-select" id="predict-transport">
+                                <option value="Private">🚗 Private</option>
+                                <option value="Public">🚌 Public</option>
+                                <option value="Walking">🚶 Walking</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="predict-max-crowd">Max Acceptable Crowd</label>
+                            <select class="form-select" id="predict-max-crowd">
+                                <option value="LOW">🟢 Low Only</option>
+                                <option value="MEDIUM" selected>🟡 Medium or Lower</option>
+                                <option value="HIGH">🔴 Any Level</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="predict-holiday">Holiday?</label>
+                            <select class="form-select" id="predict-holiday">
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="predict-event">Event</label>
+                            <select class="form-select" id="predict-event">
+                                <option value="Regular Day">Regular Day</option>
+                                <option value="Cultural Event">Cultural Event</option>
+                                <option value="Festival">Festival</option>
+                                <option value="National Holiday">National Holiday</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; justify-content: center;" id="predict-submit-btn">
+                        ✨ Predict My Visit
+                    </button>
+                </form>
+            </div>
+
+            <!-- Right: Results -->
+            <div id="predict-results-area">
+                <div class="empty-state" id="predict-empty">
+                    <div class="empty-state-icon">🔮</div>
+                    <h3 class="empty-state-title">No prediction yet</h3>
+                    <p class="empty-state-desc">Fill in the form and click "Predict My Visit" to see crowd predictions powered by ML.</p>
+                </div>
+
+                <div id="predict-loading" style="display: none;">
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-steps">
+                            <div class="loading-step active" id="ls-1"><span class="loading-step-dot"></span> Analyzing destination...</div>
+                            <div class="loading-step" id="ls-2"><span class="loading-step-dot"></span> Predicting crowd...</div>
+                            <div class="loading-step" id="ls-3"><span class="loading-step-dot"></span> Checking weather...</div>
+                            <div class="loading-step" id="ls-4"><span class="loading-step-dot"></span> Finding better times...</div>
+                            <div class="loading-step" id="ls-5"><span class="loading-step-dot"></span> Generating recommendation...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="predict-result" style="display: none;"></div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- ═══════ TRIP PLANNER PAGE ═══════ -->
+<div class="page" id="page-trip">
+    <section class="section container">
+        <h2 class="section-title">🗺️ Plan My Trip</h2>
+        <p class="section-subtitle">Add multiple destinations and we'll optimize your itinerary for the lowest crowd levels.</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); align-items: start;">
+            <!-- Left: Form -->
+            <div class="card" id="trip-form-card">
+                <div class="card-header">
+                    <h3 class="card-title">📋 Plan Your Trip</h3>
+                </div>
+
+                <form id="trip-form" onsubmit="handleTripPlan(event)">
+                    <div class="form-group">
+                        <label class="form-label">Destinations</label>
+                        <div class="destination-tags" id="trip-dest-tags">
+                            <span style="color: var(--gray-500); font-size: 0.85rem; padding: 0.3rem;">Add destinations below...</span>
+                        </div>
+                        <div style="display: flex; gap: var(--space-sm); margin-top: var(--space-sm);">
+                            <select class="form-select" id="trip-dest-select" style="flex: 1;">
+                                <option value="">Select destination...</option>
+                            </select>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="addTripDestination()">+ Add</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="trip-date">Date</label>
+                        <input class="form-input" type="date" id="trip-date" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="trip-start">Start Time</label>
+                            <input class="form-input" type="time" id="trip-start" value="09:00" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="trip-end">End Time</label>
+                            <input class="form-input" type="time" id="trip-end" value="20:00" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="trip-transport">Transportation</label>
+                            <select class="form-select" id="trip-transport">
+                                <option value="Private">🚗 Private</option>
+                                <option value="Public">🚌 Public</option>
+                                <option value="Walking">🚶 Walking</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="trip-max-crowd">Max Crowd Level</label>
+                            <select class="form-select" id="trip-max-crowd">
+                                <option value="LOW">🟢 Low Only</option>
+                                <option value="MEDIUM" selected>🟡 Medium or Lower</option>
+                                <option value="HIGH">🔴 Any Level</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-accent btn-lg" style="width: 100%; justify-content: center;" id="trip-submit-btn">
+                        ✨ Optimize My Trip
+                    </button>
+                </form>
+            </div>
+
+            <!-- Right: Results -->
+            <div id="trip-results-area">
+                <div class="empty-state" id="trip-empty">
+                    <div class="empty-state-icon">🗺️</div>
+                    <h3 class="empty-state-title">No itinerary yet</h3>
+                    <p class="empty-state-desc">Add at least 2 destinations, pick a date, and click "Optimize My Trip" to get your crowd-optimized itinerary.</p>
+                </div>
+
+                <div id="trip-loading" style="display: none;">
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-steps">
+                            <div class="loading-step active"><span class="loading-step-dot"></span> Analyzing destinations...</div>
+                            <div class="loading-step"><span class="loading-step-dot"></span> Predicting crowd for each time slot...</div>
+                            <div class="loading-step"><span class="loading-step-dot"></span> Checking weather conditions...</div>
+                            <div class="loading-step"><span class="loading-step-dot"></span> Optimizing your itinerary...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="trip-result" style="display: none;"></div>
+            </div>
+        </div>
+    </section>
+</div>
+
+</main>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <p>SmartTrip AI — Intelligent Tourism Crowd Prediction & Dynamic Trip Planner</p>
+        <p style="margin-top: 4px; font-size: 0.75rem;">ML model trained on historical Indian tourism dataset (2024–2025) • Random Forest Regressor</p>
+    </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
